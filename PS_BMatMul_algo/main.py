@@ -1,5 +1,6 @@
 import sys
 import threading
+import numpy as np
 
 # Block size for matrix multiplication
 block_size = 4
@@ -54,6 +55,10 @@ def add_matrices(a, b):
         res.append(row)
     return res
 
+# Save block function   
+def save_block(block, filename):
+  np.savetxt(filename, block)
+
 # Thread function to perform matrix multiplication for a block
 def thread_function(i, k, x):
     global A
@@ -69,6 +74,32 @@ def thread_function(i, k, x):
             [row[i * block_size:(i + 1) * block_size] for row in A[j * block_size:(j + 1) * block_size]],
             [row[j * block_size:(j + 1) * block_size] for row in B[k * block_size:(k + 1) * block_size]]
         ))
+
+        block_nameA = f"A{i+1}{j+1}"
+        block_nameB = f"B{i+1}{k+1}"
+
+        print('``````````````````````````````````````````')
+
+        print(block_nameA)
+        print(block_nameB)
+
+        # print('``````````````````````````````````````````')
+
+        # print(A)
+
+        # print('``````````````````````````````````````````')
+
+        # print(B)
+        temp_arr_A = A[j*block_size:(j+1)*block_size]
+        temp_arr_B = B[k*block_size:(k+1)*block_size]
+
+        print(temp_arr_B)
+        print(type(temp_arr_B))
+
+        # num_list_A = [float(x) for x in temp_arr_A]
+        # num_list_B = [float(x) for x in temp_arr_B]
+        # save_block(num_list_A, block_nameA)
+        # save_block(num_list_B, block_nameB)
     # Store the result in the dictionary
     finalresult[x] = mat
 
